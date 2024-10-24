@@ -102,4 +102,4 @@ startTest = () => {
 
 setInterval(() => {
   startTest();
-}, 1000);
+}, 2000);
