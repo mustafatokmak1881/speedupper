@@ -9,7 +9,7 @@ getAverageInArray = (arrayList) => {
         sum += value;
       });
 
-      resolve(sum / arrayList.length);
+      resolve((sum / arrayList.length).toFixed(2));
     })();
   });
 };
@@ -75,6 +75,9 @@ startTest = () => {
         averages[url1] = { average: 0, responseTimes: [] };
       } else {
         averages[url1].responseTimes.push(resp1.responseTime);
+        averages[url1].average = await getAverageInArray(
+          averages[url1].responseTimes
+        );
       }
 
       let url2 = "bo-api-staging";
@@ -85,6 +88,9 @@ startTest = () => {
         averages[url2] = { average: 0, responseTimes: [] };
       } else {
         averages[url2].responseTimes.push(resp2.responseTime);
+        averages[url2].average = await getAverageInArray(
+          averages[url2].responseTimes
+        );
       }
 
       console.log(averages);
