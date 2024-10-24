@@ -126,7 +126,7 @@ startTest = () => {
           },
         });
 
-        if (valuesCount >= 50) {
+        if (valuesCount >= 150) {
           clearInterval(timer);
           console.log({ completed: valuesCount });
         }
