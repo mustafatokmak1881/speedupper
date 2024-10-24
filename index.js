@@ -72,12 +72,13 @@ startTest = () => {
       // console.log({ [url1]: resp });
 
       if (!averages[url1]) {
-        averages[url1] = { average: 0, responseTimes: [] };
+        averages[url1] = { average: 0, valuesCount: 0, responseTimes: [] };
       } else {
         averages[url1].responseTimes.push(resp1.responseTime);
         averages[url1].average = await getAverageInArray(
           averages[url1].responseTimes
         );
+        averages[url1].valuesCount = averages[url1].responseTimes.length;
       }
 
       let url2 = "bo-api-staging";
@@ -85,18 +86,22 @@ startTest = () => {
       //console.log({ [url2]: resp1 });
 
       if (!averages[url2]) {
-        averages[url2] = { average: 0, responseTimes: [] };
+        averages[url2] = { average: 0, valuesCount: 0, responseTimes: [] };
       } else {
         averages[url2].responseTimes.push(resp2.responseTime);
         averages[url2].average = await getAverageInArray(
           averages[url2].responseTimes
         );
+        averages[url2].valuesCount = averages[url2].responseTimes.length;
       }
 
       console.clear();
       for (let item in averages) {
         console.log({
-          averages: { [item]: averages[item].average },
+          averages: {
+            [item]: averages[item].average,
+            valuesCount: averages[item].valuesCount,
+          },
         });
       }
     } catch (error) {
