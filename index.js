@@ -1,5 +1,6 @@
 const axios = require("axios");
 let averages = {};
+let timer;
 
 getAverageInArray = (arrayList) => {
   return new Promise((resolve, reject) => {
@@ -97,12 +98,18 @@ startTest = () => {
 
       console.clear();
       for (let item in averages) {
+        const valuesCount = averages[item].valuesCount;
         console.log({
           averages: {
             [item]: averages[item].average,
-            valuesCount: averages[item].valuesCount,
+            valuesCount,
           },
         });
+
+        if (valuesCount >= 50) {
+          clearInterval(timer);
+          console.log({ completed: valuesCount });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -110,6 +117,6 @@ startTest = () => {
   })();
 };
 
-setInterval(() => {
+timer = setInterval(() => {
   startTest();
 }, 2000);
