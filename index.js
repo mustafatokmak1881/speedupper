@@ -9,7 +9,7 @@ getAverageInArray = (arrayList) => {
         sum += value;
       });
 
-      resolve((sum / arrayList.length).toFixed(2));
+      resolve(parseInt(sum / arrayList.length));
     })();
   });
 };
@@ -102,4 +102,4 @@ startTest = () => {
 
 setInterval(() => {
   startTest();
-}, 1000);
+}, 300);
