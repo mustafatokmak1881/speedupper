@@ -15,12 +15,12 @@ getAverageInArray = (arrayList) => {
   });
 };
 
-getStaging = async (prefix) => {
+getStaging = async (prefix, addition) => {
   return new Promise((resolve, reject) => {
     (async () => {
       const startTime = Date.now();
       try {
-        const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters`;
+        const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters${addition}`;
         const response = await axios.post(
           url,
           {
@@ -69,7 +69,7 @@ startTest = () => {
   (async () => {
     try {
       let url1 = "mehmet-bo-api-dev";
-      const resp1 = await getStaging(url1);
+      const resp1 = await getStaging(url1, "");
       // console.log({ [url1]: resp });
 
       if (!averages[url1]) {
@@ -82,8 +82,28 @@ startTest = () => {
         averages[url1].valuesCount = averages[url1].responseTimes.length;
       }
 
+      let url3 = "mehmet-bo-api-dev";
+      const addition = "-new";
+      const resp3 = await getStaging(url3, addition);
+      // console.log({ [url1]: resp });
+
+      if (!averages[`${url3}${addition}`]) {
+        averages[`${url3}${addition}`] = {
+          average: 0,
+          valuesCount: 0,
+          responseTimes: [],
+        };
+      } else {
+        averages[`${url3}${addition}`].responseTimes.push(resp3.responseTime);
+        averages[`${url3}${addition}`].average = await getAverageInArray(
+          averages[`${url3}${addition}`].responseTimes
+        );
+        averages[`${url3}${addition}`].valuesCount =
+          averages[`${url3}${addition}`].responseTimes.length;
+      }
+
       let url2 = "bo-api-staging";
-      const resp2 = await getStaging(url2);
+      const resp2 = await getStaging(url2, "");
       //console.log({ [url2]: resp1 });
 
       if (!averages[url2]) {
