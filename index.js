@@ -93,7 +93,12 @@ startTest = () => {
         );
       }
 
-      console.log(averages);
+      console.clear()
+      for (let item in averages) {
+        console.log({
+          [item]: averages[item].average,
+        });
+      }
     } catch (error) {
       console.error(error);
     }
