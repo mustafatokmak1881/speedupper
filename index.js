@@ -2,7 +2,7 @@ const axios = require("axios");
 let averages = {};
 let timer;
 const limit = 150;
-timerInterval = 3000;
+const timerInterval = 3000;
 
 getAverageInArray = (arrayList) => {
   return new Promise((resolve, reject) => {
