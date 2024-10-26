@@ -130,7 +130,8 @@ startTest = () => {
 
         if (valuesCount >= limit) {
           clearInterval(timer);
-          console.log({ completed: valuesCount });
+          //console.log({ completed: valuesCount });
+          //break;
         }
       }
     } catch (error) {
