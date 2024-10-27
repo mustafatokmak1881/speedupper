@@ -1,16 +1,24 @@
 const app = require("express")();
 const http = require("http").createServer(app);
+const axios = require("axios");
+
 const port = 3006;
+let allData = {};
+
 http.listen(port, () => {
   console.log(`Listening *: ${port}`);
+  setInterval(() => {
+    startTest();
+  }, 3000);
 });
 
 app.get("/", (req, res) => {
-  res.send("Welcome");
+  res.send("Express Server is Running ...");
 });
 
-const axios = require("axios");
-let allData = {};
+app.get("/accounts", (req, res) => {
+  res.send(allData);
+});
 
 getStaging = async (prefix, addition) => {
   return new Promise((resolve, reject) => {
@@ -68,16 +76,8 @@ startTest = () => {
       let url1 = "mehmet-bo-api-dev";
       const resp1 = await getStaging(url1, "");
       allData = resp1.response.data.data.accounts;
-
-      console.log({
-        allData,
-      });
     } catch (error) {
       console.error(error);
     }
   })();
 };
-
-setInterval(() => {
-  startTest();
-}, 10000);
