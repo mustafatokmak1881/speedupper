@@ -75,7 +75,9 @@ startTest = () => {
     try {
       let url1 = "mehmet-bo-api-dev";
       const resp1 = await getStaging(url1, "");
-      allData = resp1.response.data.data.accounts;
+      if( resp1 && resp1.response && resp1.response.data && resp1.response.data.data && resp1.response.data.data.accounts){
+        allData = resp1.response.data.data.accounts;
+      }
     } catch (error) {
       console.error(error);
     }
