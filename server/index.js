@@ -1,3 +1,14 @@
+const app = require("express")();
+const http = require("http").createServer(app);
+const port = 3006;
+http.listen(port, () => {
+  console.log(`Listening *: ${port}`);
+});
+
+app.get("/", (req, res) => {
+  res.send("Welcome");
+});
+
 const axios = require("axios");
 let allData = {};
 
