@@ -75,7 +75,6 @@ const getData = async (prefix, addition, boToken, siteId) => {
                 if (error) {
                     reject(error);
                 } else {
-                    console.log(JSON.parse(body));
                     resolve({ responseTime, response: JSON.parse(body) });
                 }
             });
