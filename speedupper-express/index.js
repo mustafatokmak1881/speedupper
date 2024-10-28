@@ -4,12 +4,16 @@ const axios = require("axios");
 
 const port = 3006;
 let allData = {};
+const prefixUrl = process.argv[3];
+const timerInterval = parseInt(process.argv[2]);
+
+console.log({ prefixUrl, timerInterval });
 
 http.listen(port, () => {
   console.log(`Listening *: ${port}`);
   setInterval(() => {
     startTest();
-  }, 3000);
+  }, timerInterval);
 });
 
 app.get("/", (req, res) => {
@@ -20,7 +24,7 @@ app.get("/accounts", (req, res) => {
   res.send(allData);
 });
 
-getStaging = async (prefix, addition) => {
+staging = async (prefix, addition, boToken) => {
   return new Promise((resolve, reject) => {
     (async () => {
       const startTime = Date.now();
@@ -35,7 +39,7 @@ getStaging = async (prefix, addition) => {
             page: "1",
             order: "id",
             orderType: "asc",
-            boToken: "9711fc0274f7ce5a438f18ad84ae71c3",
+            boToken,
             external_login: "null",
           },
           {
@@ -73,9 +77,24 @@ getStaging = async (prefix, addition) => {
 startTest = () => {
   (async () => {
     try {
-      let url1 = "mehmet-bo-api-dev";
-      const resp1 = await getStaging(url1, "");
-      if( resp1 && resp1.response && resp1.response.data && resp1.response.data.data && resp1.response.data.data.accounts){
+      let url1;
+      let resp1;
+
+      if (prefixUrl === "prod") {
+        url1 = "bo-api";
+        resp1 = await prod(url1, "");
+      } else {
+        url1 = "mehmet-bo-api-dev";
+        resp1 = await staging(url1, "", "9711fc0274f7ce5a438f18ad84ae71c3");
+      }
+
+      if (
+        resp1 &&
+        resp1.response &&
+        resp1.response.data &&
+        resp1.response.data.data &&
+        resp1.response.data.data.accounts
+      ) {
         allData = resp1.response.data.data.accounts;
       }
     } catch (error) {
