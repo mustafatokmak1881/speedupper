@@ -1,7 +1,6 @@
 const app = require("express")();
 const http = require("http").createServer(app);
 const axios = require("axios");
-const { url } = require("inspector");
 
 const port = 3006;
 let allData = {};
@@ -17,6 +16,7 @@ Usage:
 
 http.listen(port, () => {
   console.log(`Listening *: ${port}`);
+  startTest();
   setInterval(() => {
     startTest();
   }, timerInterval);
@@ -30,45 +30,50 @@ app.get("/accounts", (req, res) => {
   res.send(allData);
 });
 
-getData = async (prefix, addition, boToken) => {
+getData = async (prefix, addition, boToken, siteId) => {
   return new Promise((resolve, reject) => {
     (async () => {
       const startTime = Date.now();
       try {
         const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters${addition}`;
-        console.log({ url });
-        const response = await axios.post(
-          url,
-          {
-            start: "0",
-            end: "25",
-            length: "25",
-            page: "1",
-            order: "id",
-            orderType: "asc",
-            boToken,
-            external_login: "null",
+        let params = {
+          start: "0",
+          end: "25",
+          length: "25",
+          page: "1",
+          order: "id",
+          orderType: "asc",
+          boToken,
+          external_login: "null",
+        };
+
+        if (siteId) {
+          params["search[site_id]"] = siteId;
+        }
+
+        console.log({ url, params });
+
+        const response = await axios.post(url, params, {
+          headers: {
+            accept: "application/json, text/plain, */*",
+            "accept-language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "cache-control": "no-cache",
+            "content-type": "application/x-www-form-urlencoded",
+            pragma: "no-cache",
+            priority: "u=1, i",
+            "sec-ch-ua":
+              '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "user-agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
           },
-          {
-            headers: {
-              accept: "application/json, text/plain, */*",
-              "accept-language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-              "cache-control": "no-cache",
-              "content-type": "application/x-www-form-urlencoded",
-              pragma: "no-cache",
-              priority: "u=1, i",
-              "sec-ch-ua":
-                '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-              "sec-ch-ua-mobile": "?0",
-              "sec-ch-ua-platform": '"Windows"',
-              "sec-fetch-dest": "empty",
-              "sec-fetch-mode": "cors",
-              "sec-fetch-site": "same-site",
-              "user-agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-            },
-          }
-        );
+        });
+
+        console.log(response);
 
         const endTime = Date.now();
         const responseTime = endTime - startTime;
@@ -89,7 +94,12 @@ startTest = () => {
 
       if (prefixUrl === "prod") {
         url1 = "bo-api";
-        resp1 = await getData(url1, "", "7d69ae1a90a17124f6621b61426f7ff9");
+        resp1 = await getData(
+          url1,
+          "",
+          "7d69ae1a90a17124f6621b61426f7ff9",
+          9359
+        );
       } else {
         url1 = "mehmet-bo-api-dev";
         resp1 = await getData(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
