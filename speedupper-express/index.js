@@ -1,6 +1,7 @@
 const app = require("express")();
 const http = require("http").createServer(app);
 const axios = require("axios");
+const { url } = require("inspector");
 
 const port = 3006;
 let allData = {};
@@ -29,7 +30,7 @@ app.get("/accounts", (req, res) => {
   res.send(allData);
 });
 
-staging = async (prefix, addition, boToken) => {
+getData = async (prefix, addition, boToken) => {
   return new Promise((resolve, reject) => {
     (async () => {
       const startTime = Date.now();
@@ -87,10 +88,12 @@ startTest = () => {
 
       if (prefixUrl === "prod") {
         url1 = "bo-api";
-        resp1 = await prod(url1, "");
+        console.log({ url: url1 });
+        resp1 = await getData(url1, "");
       } else {
         url1 = "mehmet-bo-api-dev";
-        resp1 = await staging(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
+        console.log({ url: url1 });
+        resp1 = await getData(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
       }
 
       if (
