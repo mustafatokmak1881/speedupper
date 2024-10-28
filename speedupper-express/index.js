@@ -36,6 +36,7 @@ getData = async (prefix, addition, boToken) => {
       const startTime = Date.now();
       try {
         const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters${addition}`;
+        console.log({ url });
         const response = await axios.post(
           url,
           {
@@ -88,11 +89,9 @@ startTest = () => {
 
       if (prefixUrl === "prod") {
         url1 = "bo-api";
-        console.log({ url: url1 });
         resp1 = await getData(url1, "", "7d69ae1a90a17124f6621b61426f7ff9");
       } else {
         url1 = "mehmet-bo-api-dev";
-        console.log({ url: url1 });
         resp1 = await getData(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
       }
 
