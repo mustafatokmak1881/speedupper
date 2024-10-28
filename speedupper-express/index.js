@@ -105,7 +105,7 @@ const startTest = () => {
                 resp1.response.data.accounts.length > 0
             ) {
                 allData = resp1.response.data.accounts;
-                console.log(allData);
+        
             }
         } catch (error) {
             console.error(error);
