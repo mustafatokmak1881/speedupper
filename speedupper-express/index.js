@@ -100,9 +100,11 @@ startTest = () => {
         resp1.response &&
         resp1.response.data &&
         resp1.response.data.data &&
-        resp1.response.data.data.accounts
+        resp1.response.data.data.accounts &&
+        resp1.response.data.data.accounts.length > 0
       ) {
         allData = resp1.response.data.data.accounts;
+        console.log(allData);
       }
     } catch (error) {
       console.error(error);
