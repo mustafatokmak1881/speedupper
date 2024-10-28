@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require("http");
-const axios = require("axios");
+const request = require("request");
 
 const app = express();
 const server = http.createServer(app);
@@ -32,50 +32,55 @@ app.get("/accounts", (req, res) => {
 
 const getData = async (prefix, addition, boToken, siteId) => {
     return new Promise((resolve, reject) => {
-        (async () => {
-            const startTime = Date.now();
-            try {
-                const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters${addition}`;
-                let params = {
-                    start: "0",
-                    end: "25",
-                    length: "25",
-                    page: "1",
-                    order: "status",
-                    orderType: "desc",
-                    boToken: "26acf2118031eafb4b74a4b6947d56f7",
-                    external_login: "false",
-                };
-                if (siteId) {
-                    // params["search[site_id]"] = siteId;
+        const startTime = Date.now();
+        try {
+            const url = `https://${prefix}.xpress-ix.com/sysapi/v1/account/search/filters${addition}`;
+            let form = {
+                start: "0",
+                end: "25",
+                length: "25",
+                page: "1",
+                order: "status",
+                orderType: "desc",
+                boToken: "26acf2118031eafb4b74a4b6947d56f7",
+                external_login: "false",
+            };
+            if (siteId) {
+                // form["search[site_id]"] = siteId;
+            }
+            request.post({
+                url: url,
+                form: form,
+                headers: {
+                    'accept': 'application/json, text/plain, */*',
+                    'accept-language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'cache-control': 'no-cache',
+                    'content-type': 'application/x-www-form-urlencoded',
+                    'origin': 'https://clientoffice-staging.xpress-ix.com',
+                    'pragma': 'no-cache',
+                    'priority': 'u=1, i',
+                    'referer': 'https://clientoffice-staging.xpress-ix.com/',
+                    'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"Windows"',
+                    'sec-fetch-dest': 'empty',
+                    'sec-fetch-mode': 'cors',
+                    'sec-fetch-site': 'same-site',
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
                 }
-                const response = await axios.post(url, params, {
-                    headers: {
-                        'accept': 'application/json, text/plain, */*',
-                        'accept-language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-                        'cache-control': 'no-cache',
-                        'content-type': 'application/x-www-form-urlencoded',
-                        'origin': 'https://clientoffice-staging.xpress-ix.com',
-                        'pragma': 'no-cache',
-                        'priority': 'u=1, i',
-                        'referer': 'https://clientoffice-staging.xpress-ix.com/',
-                        'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-                        'sec-ch-ua-mobile': '?0',
-                        'sec-ch-ua-platform': '"Windows"',
-                        'sec-fetch-dest': 'empty',
-                        'sec-fetch-mode': 'cors',
-                        'sec-fetch-site': 'same-site',
-                        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
-                    },
-                });
+            }, (error, response, body) => {
                 const endTime = Date.now();
                 const responseTime = endTime - startTime;
-                console.log(response.data);
-                resolve({ responseTime, response });
-            } catch (error) {
-                reject(error);
-            }
-        })();
+                if (error) {
+                    reject(error);
+                } else {
+                    console.log(JSON.parse(body));
+                    resolve({ responseTime, response: JSON.parse(body) });
+                }
+            });
+        } catch (error) {
+            reject(error);
+        }
     });
 };
 
@@ -95,11 +100,10 @@ const startTest = () => {
                 resp1 &&
                 resp1.response &&
                 resp1.response.data &&
-                resp1.response.data.data &&
-                resp1.response.data.data.accounts &&
-                resp1.response.data.data.accounts.length > 0
+                resp1.response.data.accounts &&
+                resp1.response.data.accounts.length > 0
             ) {
-                allData = resp1.response.data.data.accounts;
+                allData = resp1.response.data.accounts;
                 console.log(allData);
             }
         } catch (error) {
