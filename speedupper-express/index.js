@@ -92,7 +92,7 @@ const startTest = () => {
             let resp1;
             if (prefixUrl === "prod") {
                 url1 = "bo-api";
-                resp1 = await getData(url1, "", boToken, 9359);
+                resp1 = await getData(url1, "", boToken, 5258);
             } else {
                 url1 = "mehmet-bo-api-dev";
                 resp1 = await getData(url1, "", boToken);
