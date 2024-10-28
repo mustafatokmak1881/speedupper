@@ -7,7 +7,9 @@ let allData = {};
 const prefixUrl = process.argv[3];
 const timerInterval = parseInt(process.argv[2]);
 
-console.log({ prefixUrl, timerInterval });
+console.log(`
+  Usage: node . 3000 staging  
+`);
 
 http.listen(port, () => {
   console.log(`Listening *: ${port}`);
