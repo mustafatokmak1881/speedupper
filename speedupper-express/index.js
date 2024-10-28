@@ -89,7 +89,7 @@ startTest = () => {
       if (prefixUrl === "prod") {
         url1 = "bo-api";
         console.log({ url: url1 });
-        resp1 = await getData(url1, "");
+        resp1 = await getData(url1, "", "7d69ae1a90a17124f6621b61426f7ff9");
       } else {
         url1 = "mehmet-bo-api-dev";
         console.log({ url: url1 });
