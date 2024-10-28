@@ -90,7 +90,7 @@ startTest = () => {
         resp1 = await prod(url1, "");
       } else {
         url1 = "mehmet-bo-api-dev";
-        resp1 = await staging(url1, "", "9711fc0274f7ce5a438f18ad84ae71c3");
+        resp1 = await staging(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
       }
 
       if (
