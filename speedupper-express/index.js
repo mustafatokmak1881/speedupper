@@ -5,8 +5,7 @@ const axios = require("axios");
 const port = 3006;
 let allData = {};
 const prefixUrl = process.argv[3];
-const timerInterval = parseInt(process.argv[2]);
-const boToken = process.argv[4];
+const timerInterval = process.argv[2];
 
 if (!prefixUrl && !timerInterval) {
   console.log(`
@@ -42,42 +41,40 @@ getData = async (prefix, addition, boToken, siteId) => {
           end: "25",
           length: "25",
           page: "1",
-          order: "id",
-          orderType: "asc",
-          boToken,
-          external_login: "null",
+          order: "status",
+          orderType: "desc",
+          boToken: "26acf2118031eafb4b74a4b6947d56f7",
+          external_login: "false",
         };
 
         if (siteId) {
-          params["search[site_id]"] = siteId;
+          // params["search[site_id]"] = siteId;
         }
 
-        console.log({ url, params });
-
         const response = await axios.post(url, params, {
-          headers: {
-            accept: "application/json, text/plain, */*",
-            "accept-language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
-            "cache-control": "no-cache",
-            "content-type": "application/x-www-form-urlencoded",
-            pragma: "no-cache",
-            priority: "u=1, i",
-            "sec-ch-ua":
-              '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": '"Windows"',
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "user-agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+          headers: { 
+            'accept': 'application/json, text/plain, */*', 
+            'accept-language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7', 
+            'cache-control': 'no-cache', 
+            'content-type': 'application/x-www-form-urlencoded', 
+            'origin': 'https://clientoffice-staging.xpress-ix.com', 
+            'pragma': 'no-cache', 
+            'priority': 'u=1, i', 
+            'referer': 'https://clientoffice-staging.xpress-ix.com/', 
+            'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"', 
+            'sec-ch-ua-mobile': '?0', 
+            'sec-ch-ua-platform': '"Windows"', 
+            'sec-fetch-dest': 'empty', 
+            'sec-fetch-mode': 'cors', 
+            'sec-fetch-site': 'same-site', 
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
           },
         });
 
-        console.log(response);
-
         const endTime = Date.now();
         const responseTime = endTime - startTime;
+
+        console.log(response.data);
 
         resolve({ responseTime, response });
       } catch (error) {
@@ -99,7 +96,7 @@ startTest = () => {
           url1,
           "",
           "7d69ae1a90a17124f6621b61426f7ff9",
-          5258
+          9359
         );
       } else {
         url1 = "mehmet-bo-api-dev";
