@@ -9,6 +9,7 @@ const port = 3006;
 let allData = {};
 const prefixUrl = process.argv[3];
 const timerInterval = process.argv[2];
+const boToken = process.argv[4];
 
 if (!prefixUrl && !timerInterval) {
     console.log(`Usage: node . 3000 staging`);
@@ -42,11 +43,11 @@ const getData = async (prefix, addition, boToken, siteId) => {
                 page: "1",
                 order: "status",
                 orderType: "desc",
-                boToken: "26acf2118031eafb4b74a4b6947d56f7",
+                boToken,
                 external_login: "false",
             };
             if (siteId) {
-                form["search[site_id]"] = siteId;
+                //form["search[site_id]"] = siteId;
             }
             request.post({
                 url: url,
@@ -91,10 +92,10 @@ const startTest = () => {
             let resp1;
             if (prefixUrl === "prod") {
                 url1 = "bo-api";
-                resp1 = await getData(url1, "", "7d69ae1a90a17124f6621b61426f7ff9", 9359);
+                resp1 = await getData(url1, "", boToken, 9359);
             } else {
                 url1 = "mehmet-bo-api-dev";
-                resp1 = await getData(url1, "", "26acf2118031eafb4b74a4b6947d56f7");
+                resp1 = await getData(url1, "", boToken);
             }
             if (
                 resp1 &&
