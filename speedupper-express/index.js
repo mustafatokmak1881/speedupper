@@ -6,6 +6,7 @@ const port = 3006;
 let allData = {};
 const prefixUrl = process.argv[3];
 const timerInterval = parseInt(process.argv[2]);
+const boToken = process.argv[4];
 
 if (!prefixUrl && !timerInterval) {
   console.log(`
