@@ -18,9 +18,6 @@ if (!prefixUrl && !timerInterval) {
 server.listen(port, () => {
     console.log(`Listening on *: ${port}`);
     startTest();
-    setInterval(() => {
-        startTest();
-    }, timerInterval);
 });
 
 app.get("/", (req, res) => {
