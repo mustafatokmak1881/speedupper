@@ -28,6 +28,11 @@ app.get("/accounts", (req, res) => {
     res.send(allData);
 });
 
+app.get("/update", (req, res) => {
+    startTest();
+    res.send(allData);
+});
+
 const getData = async (prefix, addition, boToken, siteId) => {
     return new Promise((resolve, reject) => {
         const startTime = Date.now();
